@@ -46,12 +46,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private AudioSource _audioSource;
 
-   
-
-  
-
-      
-        
+         
     
     // Start is called before the first frame update
     void Start()
@@ -121,25 +116,16 @@ public class Player : MonoBehaviour
         }
 
         
-        if(Input.GetKeyDown("left shift"))
+        if(Input.GetKeyDown(KeyCode.LeftShift))
         {
-            _speed += 5.0f;    //increase thruster/speed
-
+            _speed += 5.0f;                
             
-            //play thruster animation
         }
-        else if(Input.GetKeyUp("left shift")) 
+        else if(Input.GetKeyUp(KeyCode.LeftShift)) 
         {
             _speed = 3.5f;
 
-            //stop thruster animation
         }
-
-        
-
-        //thruster return to normal
-        //stop thruster animation
-
 
     }
 

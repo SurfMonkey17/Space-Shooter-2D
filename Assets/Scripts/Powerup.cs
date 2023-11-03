@@ -14,8 +14,7 @@ public class Powerup : MonoBehaviour
     [SerializeField]
     private AudioClip _powerupClip;
     
-
-    
+      
     
     // Start is called before the first frame update
     void Start()
