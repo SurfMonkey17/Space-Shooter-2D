@@ -6,8 +6,10 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField]
-    private float _speed = 3.5f;
+    private float _speed = 5.0f;
     private float _speedMultiplier = 2;
+    private float _speedBoost = 2.5f;
+    private bool _isSpeedPowerupActive = false;
    
     [SerializeField] 
     private GameObject _laserPrefab;
@@ -116,14 +118,14 @@ public class Player : MonoBehaviour
         }
 
         
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if(Input.GetKeyDown(KeyCode.LeftShift) && _isSpeedPowerupActive == false)
         {
-            _speed += 5.0f;                
+            _speed += _speedBoost;                
             
         }
         else if(Input.GetKeyUp(KeyCode.LeftShift)) 
         {
-            _speed = 3.5f;
+            _speed -= _speedBoost;
 
         }
 
@@ -196,7 +198,7 @@ public class Player : MonoBehaviour
 
     public void SpeedPowerup()
     {
-        //_isSpeedPowerupActive = true;
+        _isSpeedPowerupActive = true;
         _speed  *= _speedMultiplier;
         StartCoroutine(SpeedPowerupPowerDown());
     }
@@ -204,7 +206,7 @@ public class Player : MonoBehaviour
     IEnumerator SpeedPowerupPowerDown()
     {
         yield return new WaitForSeconds(5.0f);
-        //_isSpeedPowerupActive = false;
+        _isSpeedPowerupActive = false;
         _speed /= _speedMultiplier;
     }
 
