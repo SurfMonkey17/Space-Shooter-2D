@@ -33,6 +33,9 @@ public class Player : MonoBehaviour
            
     [SerializeField]
     private GameObject _shield;
+
+    [SerializeField]
+    private int _shieldPower = 3;
     
     [SerializeField]
     private GameObject _leftEngine, _rightEngine;
@@ -154,6 +157,7 @@ public class Player : MonoBehaviour
     {
         if (_isShieldActive == true)
         {
+            
             _isShieldActive = false;
             _shield.SetActive(false);
             return;
@@ -214,6 +218,7 @@ public class Player : MonoBehaviour
     {
         _isShieldActive = true;
         _shield.SetActive(true);
+        
     }
 
     public void Score(int points)
