@@ -718,6 +718,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1347491887}
     m_Modifications:
+    - target: {fileID: 7963973231295025712, guid: 82d7ae13f066e7648bc404de223a2bfb,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7963973231295025712, guid: 82d7ae13f066e7648bc404de223a2bfb,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.990566
+      objectReference: {fileID: 0}
+    - target: {fileID: 7963973231295025712, guid: 82d7ae13f066e7648bc404de223a2bfb,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.97792286
+      objectReference: {fileID: 0}
+    - target: {fileID: 7963973231295025712, guid: 82d7ae13f066e7648bc404de223a2bfb,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.9672036
+      objectReference: {fileID: 0}
+    - target: {fileID: 7963973231295025712, guid: 82d7ae13f066e7648bc404de223a2bfb,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7963973231295025713, guid: 82d7ae13f066e7648bc404de223a2bfb,
         type: 3}
       propertyPath: m_RootOrder
@@ -1365,6 +1390,7 @@ MonoBehaviour:
     type: 3}
   _isShieldActive: 0
   _shield: {fileID: 718164067}
+  _shieldPower: 0
   _leftEngine: {fileID: 348990000}
   _rightEngine: {fileID: 1282876786}
   _score: 0

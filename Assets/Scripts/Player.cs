@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     private GameObject _shield;
 
     [SerializeField]
-    private int _shieldPower = 3;
+    private int _shieldPower = 0;
     
     [SerializeField]
     private GameObject _leftEngine, _rightEngine;
@@ -50,6 +50,10 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private AudioSource _audioSource;
+
+    private bool _isInvincible = false;
+    private float _invincibleDuration = 1.0f;
+    private float _invincibilityTimer = 0; 
 
          
     
@@ -87,6 +91,15 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (_isInvincible)
+        {
+            _invincibilityTimer -= Time.deltaTime;
+            if(_invincibilityTimer <=0)
+            {
+                _isInvincible = false;
+            }
+        }
+
         CalculateMovement();
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
@@ -94,7 +107,7 @@ public class Player : MonoBehaviour
           FireLaser();
         }
 
-  
+        
     }
 
     void CalculateMovement() 
@@ -155,15 +168,40 @@ public class Player : MonoBehaviour
 
     public void Damage()
     {
-        if (_isShieldActive == true)
-        {
-            
-            _isShieldActive = false;
-            _shield.SetActive(false);
+        if (_isInvincible)
             return;
+
+        if (_isShieldActive == true)        
+        {
+            Renderer shieldRenderer = _shield.GetComponent<Renderer>();
+
+            if (_shieldPower == 3)
+            {
+                //color = orange
+                shieldRenderer.material.color = new Color(1f, 0.5f, 0f, 1f);
+                _shieldPower = 2;
+            }
+
+            else if (_shieldPower == 2)
+            {
+                //color = red
+                shieldRenderer.material.color = Color.red;
+                _shieldPower = 1;
+            }
+
+            else if (_shieldPower == 1)
+            {
+                _isShieldActive = false;
+                _shield.SetActive(false);
+                return;
+            }
+
         }
 
         _lives--;
+
+        _isInvincible = true;
+        _invincibilityTimer = _invincibleDuration;
 
         if (_lives == 2)
         {
@@ -218,6 +256,7 @@ public class Player : MonoBehaviour
     {
         _isShieldActive = true;
         _shield.SetActive(true);
+        _shieldPower = 3;
         
     }
 
