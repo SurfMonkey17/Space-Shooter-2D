@@ -29,13 +29,12 @@ public class Player : MonoBehaviour
     private GameObject _tripleshotprefab;
 
     [SerializeField]
-    private bool _isShieldActive = false;
-           
+    private bool _isShieldActive = false;    
     [SerializeField]
     private GameObject _shield;
-
     [SerializeField]
     private int _shieldPower = 0;
+    private Renderer _shieldRenderer;
     
     [SerializeField]
     private GameObject _leftEngine, _rightEngine;
@@ -55,14 +54,15 @@ public class Player : MonoBehaviour
     private float _invincibleDuration = 1.0f;
     private float _invincibilityTimer = 0; 
 
+
          
     
     // Start is called before the first frame update
     void Start()
     {
-        
+        _shieldRenderer = _shield.GetComponent<Renderer>();
 
-    //take the current position = new position (0, 0, 0)
+        //take the current position = new position (0, 0, 0)
         transform.position = new Vector3(0, 0, 0);
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
@@ -173,28 +173,30 @@ public class Player : MonoBehaviour
 
         if (_isShieldActive == true)        
         {
-            Renderer shieldRenderer = _shield.GetComponent<Renderer>();
-
             if (_shieldPower == 3)
             {
                 //color = orange
-                shieldRenderer.material.color = new Color(1f, 0.5f, 0f, 1f);
+                _shieldRenderer.material.color = Color.yellow;
                 _shieldPower = 2;
+              
             }
 
             else if (_shieldPower == 2)
             {
                 //color = red
-                shieldRenderer.material.color = Color.red;
+                _shieldRenderer.material.color = Color.red;
                 _shieldPower = 1;
+               
             }
 
             else if (_shieldPower == 1)
             {
                 _isShieldActive = false;
                 _shield.SetActive(false);
-                return;
+              
             }
+
+            return;
 
         }
 
@@ -257,7 +259,7 @@ public class Player : MonoBehaviour
         _isShieldActive = true;
         _shield.SetActive(true);
         _shieldPower = 3;
-        
+        _shieldRenderer.material.color = Color.white;
     }
 
     public void Score(int points)
