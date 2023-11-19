@@ -13,6 +13,9 @@ public class Player : MonoBehaviour
    
     [SerializeField] 
     private GameObject _laserPrefab;
+
+    [SerializeField]
+    private int _ammoCount = 15;
         
     [SerializeField]
     private float _fireRate = 0.15f;
@@ -159,7 +162,12 @@ public class Player : MonoBehaviour
 
         else
         {
-            Object.Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity);
+            if (_ammoCount > 0)
+            {
+                Object.Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity);
+                _ammoCount -= 1;
+            }
+
         }
 
         //play laser fire audio
