@@ -14,15 +14,16 @@ public class Player : MonoBehaviour
     [SerializeField] 
     private GameObject _laserPrefab;
 
-    [SerializeField]
-    private int _ammoCount = 15;
-        
+           
     [SerializeField]
     private float _fireRate = 0.15f;
     private float _canFire = -1f;
 
     [SerializeField]
     private int _lives = 3;
+
+    [SerializeField]
+    private int _ammoCount = 15;
    
     private SpawnManager _spawnManager;
 
@@ -49,6 +50,9 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private AudioClip _laserSoundClip;
+
+    [SerializeField]
+    private AudioClip _emptyAmmoSoundClip;
 
     [SerializeField]
     private AudioSource _audioSource;
@@ -109,7 +113,6 @@ public class Player : MonoBehaviour
         {
           FireLaser();
         }
-
         
     }
 
@@ -160,15 +163,18 @@ public class Player : MonoBehaviour
            Instantiate(_tripleshotprefab, transform.position, Quaternion.identity);
         }
 
-        else
+        else if (_ammoCount > 0)
         {
-            if (_ammoCount > 0)
-            {
-                Object.Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity);
-                _ammoCount -= 1;
-            }
-
+           Object.Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity);
+           _ammoCount -= 1;
+           _uiManager.UpdateAmmoCount(_ammoCount);                
         }
+
+        else if (_ammoCount == 0)
+        {
+            _audioSource.clip = _emptyAmmoSoundClip;
+        }
+               
 
         //play laser fire audio
         _audioSource.Play();
@@ -182,26 +188,21 @@ public class Player : MonoBehaviour
         if (_isShieldActive == true)        
         {
             if (_shieldPower == 3)
-            {
-                //color = orange
+            {               
                 _shieldRenderer.material.color = Color.yellow;
-                _shieldPower = 2;
-              
+                _shieldPower = 2;              
             }
 
             else if (_shieldPower == 2)
             {
-                //color = red
                 _shieldRenderer.material.color = Color.red;
                 _shieldPower = 1;
-               
-            }
+             }
 
             else if (_shieldPower == 1)
             {
                 _isShieldActive = false;
-                _shield.SetActive(false);
-              
+                _shield.SetActive(false);              
             }
 
             return;

@@ -926,6 +926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 090742ed535798442910403ab62e631b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _ammoCountText: {fileID: 2104997678}
   _scoreText: {fileID: 1771961645}
   _livesImg: {fileID: 280620154}
   _liveSprites:
@@ -1385,9 +1386,9 @@ MonoBehaviour:
   _speed: 5
   _laserPrefab: {fileID: 8825894976140182774, guid: 9434e5d4975806c4698a9af5d5e62ef4,
     type: 3}
-  _ammoCount: 15
   _fireRate: 0.15
   _lives: 3
+  _ammoCount: 15
   _tripleshotprefab: {fileID: 1508592858110568116, guid: d3787753a630efe4ea5217dccc950f31,
     type: 3}
   _isShieldActive: 0
@@ -2076,8 +2077,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 96.44, y: -98.04}
-  m_SizeDelta: {x: 140.362, y: 22.572868}
+  m_AnchoredPosition: {x: 113.04, y: -98.04}
+  m_SizeDelta: {x: 172.23914, y: 22.572868}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2104997678
 MonoBehaviour:
@@ -2111,7 +2112,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Ammo Count:'
+  m_Text: 'Ammo Count: 15'
 --- !u!222 &2104997679
 CanvasRenderer:
   m_ObjectHideFlags: 0

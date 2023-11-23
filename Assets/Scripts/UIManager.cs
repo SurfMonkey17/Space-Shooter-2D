@@ -6,23 +6,32 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     [SerializeField]
+    private Text _ammoCountText;
+
+    [SerializeField]
     private Text _scoreText;
+
     [SerializeField]
     private Image _livesImg;
     [SerializeField]
-    private Sprite[] _liveSprites;
+    private Sprite [] _liveSprites;
+
     [SerializeField]
     private Text _gameOverText;
     [SerializeField]
     private Text _restartText;
 
     private GameManager _gameManager;
+    
 
     void Start()
     {
         _scoreText.text = "Score: " + 0;
         _gameOverText.gameObject.SetActive(false);
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
+        _ammoCountText.text = "Ammo Count: " + 15; 
+       
+        
 
         if (_gameManager == null)
         { 
@@ -44,6 +53,12 @@ public class UIManager : MonoBehaviour
             GameOverSequence();
         }
     }
+    
+    public void UpdateAmmoCount(int ammoCount)
+    {
+        _ammoCountText.text = "Ammo Count: " + ammoCount.ToString();
+    }
+   
     
     void GameOverSequence()
     {
