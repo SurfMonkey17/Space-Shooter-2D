@@ -1398,6 +1398,7 @@ MonoBehaviour:
   _rightEngine: {fileID: 1282876786}
   _score: 0
   _laserSoundClip: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  _emptyAmmoSoundClip: {fileID: 8300000, guid: 93b378650ef68894ab51f364606ea33f, type: 3}
   _audioSource: {fileID: 0}
 --- !u!212 &1347491886
 SpriteRenderer:
@@ -2078,7 +2079,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 113.04, y: -98.04}
-  m_SizeDelta: {x: 172.23914, y: 22.572868}
+  m_SizeDelta: {x: 172.23907, y: 22.572868}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2104997678
 MonoBehaviour:
