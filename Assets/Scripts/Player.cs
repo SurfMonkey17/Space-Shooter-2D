@@ -270,6 +270,11 @@ public class Player : MonoBehaviour
         _shieldPower = 3;
         _shieldRenderer.material.color = Color.white;
     }
+    
+    public void AmmoPowerup()
+    {
+        _ammoCount = 15;
+    }
 
     public void Score(int points)
     {
