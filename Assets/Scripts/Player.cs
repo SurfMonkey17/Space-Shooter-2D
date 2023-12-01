@@ -161,22 +161,22 @@ public class Player : MonoBehaviour
         if (_isTripleShotActive == true)
         {
            Instantiate(_tripleshotprefab, transform.position, Quaternion.identity);
+            _audioSource.clip = _laserSoundClip;
         }
 
         else if (_ammoCount > 0)
         {
            Object.Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity);
            _ammoCount -= 1;
-           _uiManager.UpdateAmmoCount(_ammoCount);                
+           _uiManager.UpdateAmmoCount(_ammoCount);
+            _audioSource.clip = _laserSoundClip;
         }
 
-        else if (_ammoCount == 0)
+        else if (_ammoCount == 0 && _isTripleShotActive == false)
         {
             _audioSource.clip = _emptyAmmoSoundClip;
         }
                
-
-        //play laser fire audio
         _audioSource.Play();
     }
 
@@ -274,6 +274,8 @@ public class Player : MonoBehaviour
     public void AmmoPowerup()
     {
         _ammoCount = 15;
+        _uiManager.UpdateAmmoCount(_ammoCount);
+        _audioSource.Stop();
     }
 
     public void Score(int points)
