@@ -284,6 +284,21 @@ public class Player : MonoBehaviour
         _uiManager.UpdateScore(_score);
         
     }
+
+    public void OneUpPowerup()
+    {
+        if (_lives < 3)
+        {
+            _lives += 1;
+        }
+
+        else
+        {
+            _lives = 3;
+        }
+       
+        _uiManager.UpdateLives(_lives);
+    }
    
 }
 
