@@ -287,14 +287,21 @@ public class Player : MonoBehaviour
 
     public void OneUpPowerup()
     {
-        if (_lives < 3)
+        if (_lives == 3)
+        {
+            return; 
+        }
+            
+        else if (_lives == 2)
         {
             _lives += 1;
+            _leftEngine.SetActive(false);
         }
 
-        else
+        else if (_lives == 1)
         {
-            _lives = 3;
+            _lives += 1;
+            _rightEngine.SetActive(false);
         }
        
         _uiManager.UpdateLives(_lives);
