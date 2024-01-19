@@ -59,9 +59,10 @@ public class Player : MonoBehaviour
 
     private bool _isInvincible = false;
     private float _invincibleDuration = 1.0f;
-    private float _invincibilityTimer = 0; 
+    private float _invincibilityTimer = 0;
 
-
+    private float _explosionRadius = 8.0f;
+    
          
     
     // Start is called before the first frame update
@@ -306,7 +307,20 @@ public class Player : MonoBehaviour
        
         _uiManager.UpdateLives(_lives);
     }
-   
+
+    public void RadiusBomb()
+    {
+       {
+            Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, _explosionRadius);
+            foreach(var hitCollider in hitColliders)
+            {
+                if(hitCollider.CompareTag("Enemy"))
+                { 
+                    Destroy(hitCollider.gameObject);
+                }
+            }
+       }
+    }
 }
 
 

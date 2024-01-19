@@ -66,6 +66,9 @@ public class Powerup : MonoBehaviour
                         player.OneUpPowerup();
                         break;
 
+                    case 5: player.RadiusBomb();
+                        break;
+
                     default:
                         Debug.Log("Default Value");
                         break;
