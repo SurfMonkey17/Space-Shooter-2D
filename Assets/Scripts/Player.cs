@@ -62,6 +62,7 @@ public class Player : MonoBehaviour
     private float _invincibilityTimer = 0;
 
     private float _explosionRadius = 8.0f;
+   
     
          
     
@@ -315,8 +316,8 @@ public class Player : MonoBehaviour
             foreach(var hitCollider in hitColliders)
             {
                 if(hitCollider.CompareTag("Enemy"))
-                { 
-                    Destroy(hitCollider.gameObject);
+                {
+                   Destroy(hitCollider.gameObject);
                 }
             }
        }
