@@ -317,7 +317,12 @@ public class Player : MonoBehaviour
             {
                 if(hitCollider.CompareTag("Enemy"))
                 {
-                   Destroy(hitCollider.gameObject);
+                   Enemy enemyScript = hitCollider.GetComponent<Enemy>();
+                   if (enemyScript != null)
+                    {
+                        enemyScript.DestroyEnemy();
+                    }
+                    
                 }
             }
        }

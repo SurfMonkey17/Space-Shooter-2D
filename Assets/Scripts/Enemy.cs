@@ -79,6 +79,14 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void DestroyEnemy()
+    {
+        _anim.SetTrigger("OnEnemyDeath");
+        _enemySpeed = 0;
+        _audioSource.Play();
+        Destroy(gameObject, 2.0f);
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log("Hit: " + other.transform.name);
