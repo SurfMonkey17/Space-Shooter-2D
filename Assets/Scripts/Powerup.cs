@@ -44,17 +44,7 @@ public class Powerup : MonoBehaviour
 
             if (player != null)
             {
-               // int randomNumber = UnityEngine.Random.Range(0, 100);
-               // if (randomNumber < 90)
-               // {
-               //  _powerupID = UnityEngine.Random.Range(0, 5);
-               // }
-               // else
-               // {
-               //  _powerupID = 5; 
-               // }
-
-                switch(_powerupID)
+               switch(_powerupID)
                 {
                     case 0:
                         player.TripleShotActive();

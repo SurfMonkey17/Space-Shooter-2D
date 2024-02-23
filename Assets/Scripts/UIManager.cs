@@ -22,6 +22,10 @@ public class UIManager : MonoBehaviour
     private Text _restartText;
 
     private GameManager _gameManager;
+
+    private Slider _thrusterSlider;
+    private float _maxThrusterPower = 100f;
+    private float _currentThrusterPower;
     
 
     void Start()
@@ -29,10 +33,10 @@ public class UIManager : MonoBehaviour
         _scoreText.text = "Score: " + 0;
         _gameOverText.gameObject.SetActive(false);
         _gameManager = GameObject.Find("Game_Manager").GetComponent<GameManager>();
-        _ammoCountText.text = "Ammo Count: " + 15; 
+        _ammoCountText.text = "Ammo Count: " + 15;
+        _currentThrusterPower = _maxThrusterPower;
        
         
-
         if (_gameManager == null)
         { 
             Debug.LogError("GameManager is null."); 
@@ -78,5 +82,9 @@ public class UIManager : MonoBehaviour
             _gameOverText.text = "";
             yield return new WaitForSeconds(0.5f);
         }
+
+     
     }
+
+    
 }
