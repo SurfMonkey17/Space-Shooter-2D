@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
 
     private GameManager _gameManager;
 
+    [SerializeField]
     private Slider _thrusterSlider;
     private float _maxThrusterPower = 100f;
     private float _currentThrusterPower;
