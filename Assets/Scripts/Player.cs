@@ -62,10 +62,12 @@ public class Player : MonoBehaviour
     private float _invincibilityTimer = 0;
 
     private float _explosionRadius = 8.0f;
-   
+
+    private float _thrusterCooldown = 2.0f;
+    private bool _isThrusterAvailable = true;
+    private float _thrusterUseRate = 0.5f; 
     
-         
-    
+             
     // Start is called before the first frame update
     void Start()
     {
@@ -115,6 +117,8 @@ public class Player : MonoBehaviour
         {
           FireLaser();
         }
+
+        ThrusterBooster();
         
     }
 
@@ -326,6 +330,37 @@ public class Player : MonoBehaviour
                 }
             }
        }
+    }
+
+    void ThrusterBooster()
+    {
+        if (Input.GetKey(KeyCode.LeftShift) && _isThrusterAvailable && _uiManager.GetThrusterPower() > 0)
+        {
+            _speed += _speedBoost;
+            _uiManager.UpdateThrusterPower(-_thrusterUseRate * Time.deltaTime);
+        }
+        else if (Input.GetKeyUp(KeyCode.LeftShift) || _uiManager.GetThrusterPower() <= 0)
+        {
+            _speed -= _speedBoost;
+            if (!_isThrusterAvailable)
+                return;
+
+            _isThrusterAvailable = false;
+            StartCoroutine(ThrusterCooldownRoutine());
+        }
+    }
+
+    IEnumerator ThrusterCooldownRoutine()
+    {
+        yield return new WaitForSeconds(_thrusterCooldown);
+        
+        while(_uiManager.GetThrusterPower() < 100)
+        {
+            _uiManager.UpdateThrusterPower(50f * Time.deltaTime);
+            yield return null;
+        }
+
+        _isThrusterAvailable = true;
     }
 }
 

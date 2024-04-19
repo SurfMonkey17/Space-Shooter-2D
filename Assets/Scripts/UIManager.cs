@@ -86,6 +86,16 @@ public class UIManager : MonoBehaviour
 
      
     }
+    
+    public void UpdateThrusterPower(float change)
+    {
+        _currentThrusterPower = Mathf.Clamp(_currentThrusterPower + change, 0, _maxThrusterPower);
+        _thrusterSlider.value = _currentThrusterPower / _maxThrusterPower; 
+    }
 
+    public float GetThrusterPower()
+    {
+        return _currentThrusterPower;
+    }
     
 }
