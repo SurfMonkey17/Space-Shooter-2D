@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -10,11 +11,10 @@ public class Player : MonoBehaviour
     private float _speedMultiplier = 2;
     private float _speedBoost = 2.5f;
     private bool _isSpeedPowerupActive = false;
-   
-    [SerializeField] 
+
+    [SerializeField]
     private GameObject _laserPrefab;
 
-           
     [SerializeField]
     private float _fireRate = 0.15f;
     private float _canFire = -1f;
@@ -24,25 +24,25 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private int _ammoCount = 15;
-   
+
     private SpawnManager _spawnManager;
 
-    private bool _isTripleShotActive = false; 
+    private bool _isTripleShotActive = false;
 
     [SerializeField]
     private GameObject _tripleshotprefab;
 
     [SerializeField]
-    private bool _isShieldActive = false;    
+    private bool _isShieldActive = false;
     [SerializeField]
     private GameObject _shield;
     [SerializeField]
     private int _shieldPower = 0;
     private Renderer _shieldRenderer;
-    
+
     [SerializeField]
     private GameObject _leftEngine, _rightEngine;
-    
+
     [SerializeField]
     private int _score;
 
@@ -63,11 +63,10 @@ public class Player : MonoBehaviour
 
     private float _explosionRadius = 8.0f;
 
-    private float _thrusterCooldown = 2.0f;
-    private bool _isThrusterAvailable = true;
-    private float _thrusterUseRate = 0.5f; 
-    
-             
+    [SerializeField]
+    private Slider _thrusterBoost;
+    private bool _isThrusterBoostActive = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -78,7 +77,7 @@ public class Player : MonoBehaviour
         _spawnManager = GameObject.Find("Spawn_Manager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
         _audioSource = GetComponent<AudioSource>();
-       
+
         if (_spawnManager == null)
         {
             Debug.Log("The Spawn Manager is null.");
@@ -93,7 +92,7 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("AudioSource on the player is null.");
         }
-        else 
+        else
         {
             _audioSource.clip = _laserSoundClip;
         }
@@ -105,7 +104,7 @@ public class Player : MonoBehaviour
         if (_isInvincible)
         {
             _invincibilityTimer -= Time.deltaTime;
-            if(_invincibilityTimer <=0)
+            if (_invincibilityTimer <= 0)
             {
                 _isInvincible = false;
             }
@@ -115,26 +114,23 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
         {
-          FireLaser();
+            FireLaser();
         }
 
-        ThrusterBooster();
         
     }
 
-    void CalculateMovement() 
+    void CalculateMovement()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        
-        transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _speed * Time.deltaTime);
-                       
-        //restrict player movement on y axis to -3.8f and 0
 
-        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.8f, 0));
-        
-        //restrict player movement to between 11 and -11. Player will wrap to other side when limit is reached. 
+        transform.Translate(new Vector3(horizontalInput, verticalInput, 0) * _speed * Time.deltaTime);
+            
+
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, -3.8f, 0));//restrict player movement on y axis to -3.8f and 0
+                
 
         if (transform.position.x > 11)
         {
@@ -142,20 +138,44 @@ public class Player : MonoBehaviour
         }
         else if (transform.position.x < -11)
         {
-            transform.position = new Vector3(11, transform.position.y, 0);
+            transform.position = new Vector3(11, transform.position.y, 0); //restricts player movement to between 11 and -11. Player will wrap to other side when limit is reached. 
         }
 
-        
-        if(Input.GetKeyDown(KeyCode.LeftShift) && _isSpeedPowerupActive == false)
+
+        /*if (Input.GetKeyDown(KeyCode.LeftShift) && _isSpeedPowerupActive == false)
         {
-            _speed += _speedBoost;                
-            
+            _speed += _speedBoost;
+
         }
-        else if(Input.GetKeyUp(KeyCode.LeftShift)) 
+        else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             _speed -= _speedBoost;
 
+        }*/
+
+        if (Input.GetKey(KeyCode.LeftShift) && _uiManager._isThrusterBoostActive == true)
+        {
+            transform.Translate(Vector3.right * horizontalInput * _speed * _speedBoost * Time.deltaTime);
+            transform.Translate(Vector3.up * verticalInput * _speed * _speedBoost * Time.deltaTime);
+
+            if (!_isThrusterBoostActive)
+            {
+                _isThrusterBoostActive = true;
+                StartCoroutine(_uiManager.ThrusterBoostDown()); 
+            }
+
+            else 
+            {
+                if (_isThrusterBoostActive)
+                {
+                    _isThrusterBoostActive = false;
+                    StartCoroutine(_uiManager.ThrusterBoostUp());
+                }               
+            }
+            
         }
+
+         
 
     }
 
@@ -166,15 +186,15 @@ public class Player : MonoBehaviour
 
         if (_isTripleShotActive == true)
         {
-           Instantiate(_tripleshotprefab, transform.position, Quaternion.identity);
+            Instantiate(_tripleshotprefab, transform.position, Quaternion.identity);
             _audioSource.clip = _laserSoundClip;
         }
 
         else if (_ammoCount > 0)
         {
-           Object.Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity);
-           _ammoCount -= 1;
-           _uiManager.UpdateAmmoCount(_ammoCount);
+            Object.Instantiate(_laserPrefab, transform.position + new Vector3(0, 1.0f, 0), Quaternion.identity);
+            _ammoCount -= 1;
+            _uiManager.UpdateAmmoCount(_ammoCount);
             _audioSource.clip = _laserSoundClip;
         }
 
@@ -182,7 +202,7 @@ public class Player : MonoBehaviour
         {
             _audioSource.clip = _emptyAmmoSoundClip;
         }
-               
+
         _audioSource.Play();
     }
 
@@ -191,24 +211,24 @@ public class Player : MonoBehaviour
         if (_isInvincible)
             return;
 
-        if (_isShieldActive == true)        
+        if (_isShieldActive == true)
         {
             if (_shieldPower == 3)
-            {               
+            {
                 _shieldRenderer.material.color = Color.yellow;
-                _shieldPower = 2;              
+                _shieldPower = 2;
             }
 
             else if (_shieldPower == 2)
             {
                 _shieldRenderer.material.color = Color.red;
                 _shieldPower = 1;
-             }
+            }
 
             else if (_shieldPower == 1)
             {
                 _isShieldActive = false;
-                _shield.SetActive(false);              
+                _shield.SetActive(false);
             }
 
             return;
@@ -234,9 +254,8 @@ public class Player : MonoBehaviour
 
         if (_lives < 1)
         {
-           _spawnManager.OnPlayerDeath();
-           Destroy(this.gameObject);
-                                 
+            _spawnManager.OnPlayerDeath();
+            Destroy(this.gameObject);
         }
     }
 
@@ -258,7 +277,7 @@ public class Player : MonoBehaviour
     public void SpeedPowerup()
     {
         _isSpeedPowerupActive = true;
-        _speed  *= _speedMultiplier;
+        _speed *= _speedMultiplier;
         StartCoroutine(SpeedPowerupPowerDown());
     }
 
@@ -276,7 +295,7 @@ public class Player : MonoBehaviour
         _shieldPower = 3;
         _shieldRenderer.material.color = Color.white;
     }
-    
+
     public void AmmoPowerup()
     {
         _ammoCount = 15;
@@ -288,16 +307,16 @@ public class Player : MonoBehaviour
     {
         _score += points;
         _uiManager.UpdateScore(_score);
-        
+
     }
 
     public void OneUpPowerup()
     {
         if (_lives == 3)
         {
-            return; 
+            return;
         }
-            
+
         else if (_lives == 2)
         {
             _lives += 1;
@@ -309,59 +328,30 @@ public class Player : MonoBehaviour
             _lives += 1;
             _rightEngine.SetActive(false);
         }
-       
+
         _uiManager.UpdateLives(_lives);
     }
 
     public void RadiusBomb()
     {
-       {
+        {
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, _explosionRadius);
-            foreach(var hitCollider in hitColliders)
+            foreach (var hitCollider in hitColliders)
             {
-                if(hitCollider.CompareTag("Enemy"))
+                if (hitCollider.CompareTag("Enemy"))
                 {
-                   Enemy enemyScript = hitCollider.GetComponent<Enemy>();
-                   if (enemyScript != null)
+                    Enemy enemyScript = hitCollider.GetComponent<Enemy>();
+                    if (enemyScript != null)
                     {
                         enemyScript.DestroyEnemy();
                     }
-                    
+
                 }
             }
-       }
-    }
-
-    void ThrusterBooster()
-    {
-        if (Input.GetKey(KeyCode.LeftShift) && _isThrusterAvailable && _uiManager.GetThrusterPower() > 0)
-        {
-            _speed += _speedBoost;
-            _uiManager.UpdateThrusterPower(-_thrusterUseRate * Time.deltaTime);
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftShift) || _uiManager.GetThrusterPower() <= 0)
-        {
-            _speed -= _speedBoost;
-            if (!_isThrusterAvailable)
-                return;
-
-            _isThrusterAvailable = false;
-            StartCoroutine(ThrusterCooldownRoutine());
         }
     }
 
-    IEnumerator ThrusterCooldownRoutine()
-    {
-        yield return new WaitForSeconds(_thrusterCooldown);
-        
-        while(_uiManager.GetThrusterPower() < 100)
-        {
-            _uiManager.UpdateThrusterPower(50f * Time.deltaTime);
-            yield return null;
-        }
-
-        _isThrusterAvailable = true;
-    }
+  
 }
 
 
